@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: worker
+  template:
+    metadata:
+      labels:
+        component: worker
+        environment: production
+        project: practice4-kubernetes
+    spec:
+      containers:
+        - name: worker
+          image: duong1200798/multi-worker
+          envFrom:
+          - configMapRef:
+              name: worker-config-map
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service
+            - name: REDIS_PORT
+              value: '6379'
