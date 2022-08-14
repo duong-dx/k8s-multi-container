@@ -132,4 +132,40 @@
 - set secret
 > $ kubectl create secret generic postgres-password --from-literal POSTGRES_PASSWORD=password
 
-7.3 GKE (Google Kubernetes Engine) > chọn Cluster đã tạo > chọn configuration (để xem secret đã tạo)
+7.3 GKE (Google Kubernetes Engine) > chọn Cluster đã tạo > chọn "Secret and ConfigMap" (để xem secret đã tạo)
+
+8. install helm
+ - Do dưới local đang dùng minikube và dùng "minikube addons enable ingress" để install 
+    các resource liên quan đến nginx-ingress nhưng "trên server sẽ không hiểu điều này"
+
+8.1 Truy cập vào trang chủ kubernetes ingress-nginx
+   https://github.com/kubernetes/ingress-nginx/ rồi tìm đến  => https://kubernetes.github.io/ingress-nginx/
+    => chọn using with Helm
+
+8.2 Helm + Tiller
+ - [command we issue] -> [Helm client] -> [Tiller Server]
+ - truy cập github.com/helm/helm > Đến trang chủ Helm > chọn Docs > chọn "Install Helm"
+  tiếp tục chọn "From Script"
+
+8.3 Truy cập Google Cloud Console (Flow Docs)
+
+Đây chỉ là demo với version hiện tại (follow follow https://docs.google.com/document/d/1HS1jvc6rUD_6LJ5zUvrtns9mozoYvivlY3Jsohmks9I/edit)
+> $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+> 
+> $ chmod 700 get_helm.sh
+>
+> $ ./get_helm.sh
+>
+> $ helm upgrade --install ingress-nginx ingress-nginx \
+--repo https://kubernetes.github.io/ingress-nginx \
+--namespace ingress-nginx --create-namespace
+![img_5.png](img_5.png) 
+> $ kubectl get all -n ingress-nginx #get all resource of ingress-nginx namespace
+
+
+- Kiểm tra kết quả
+  + Chọn Kubernetes Engine > Workload
+   ![img_6.png](img_6.png)
+  + Chọn Kubernetes Engine > Service And Ingress
+  ![img_7.png](img_7.png)
+  ![img_8.png](img_8.png)
