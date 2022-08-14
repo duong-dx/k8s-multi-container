@@ -1,3 +1,5 @@
+Cấu trúc dự án
+![img_9.png](img_9.png)
 1. Create new Project in GG cloud
 2. Chọn Kubernetes Engine > Enable Kubernetes Engine API
 3. Refresh lại sẽ thấy yêu cầu tạo kubernetes cluster > chọn tạo mới > GKE Standard
@@ -67,17 +69,17 @@
 - Build docker image
 
 > $ docker build -t [docker_id]/[image_name] -f [path/Dockerfile] [path]
-> 
+
 > $ docker build -t duong1200798/multi-client -f ./client/Dockerfile ./client
 
 - Push image to docker hub
 > $ docker push [docker_id]/[image_name]
-> 
+
 > $ docker push duong1200798/multi-client
 
 - set image for container
 > $ kubectl set [object]/[object_name] [container_name]=[docker_id]/[image_name]
-> 
+
 > $ kubectl set deployments/server-deployment server=duong1200798/multi-server
 
 6.8.2 Build docker have tag version "theo commit id"
@@ -90,7 +92,7 @@
 - Build docker image
 
 > $ docker build -t [docker_id]/[image_name]:[version] -f [path/Dockerfile] [path]
->
+
 > $ docker build -t duong1200798/multi-client:745181d3 -f ./client/Dockerfile ./client
 
 - Push image to docker hub
@@ -100,7 +102,7 @@
 
 - set image for container
 > $ kubectl set [object]/[object_name] [container_name]=[docker_id]/[image_name]:[version]
->
+
 > $ kubectl set deployments/server-deployment server=duong1200798/multi-server:745181d3
 
 - cần sửa lại các image  trong k8s .yaml file với image name: version tương ứng
@@ -116,17 +118,17 @@
 ![img_4.png](img_4.png)
 - set project
 > $ gcloud config set project [project_id]
-> 
+ 
 > $ gcloud config set project k8s-multi-conatiner
 
 - set zone
 > $ gcloud config set compute/zone [zone]
->
+
 > $ gcloud config set compute/zone asia-southeast1-a
 
 - set container cluster
 > $ gcloud container clusters get-credentials [cluster-id]
->
+
 > $ gcloud container clusters get-credentials k8s-multi-cluster
 
 - set secret
@@ -151,11 +153,11 @@
 
 Đây chỉ là demo với version hiện tại (follow follow https://docs.google.com/document/d/1HS1jvc6rUD_6LJ5zUvrtns9mozoYvivlY3Jsohmks9I/edit)
 > $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-> 
+
 > $ chmod 700 get_helm.sh
->
+
 > $ ./get_helm.sh
->
+
 > $ helm upgrade --install ingress-nginx ingress-nginx \
 --repo https://kubernetes.github.io/ingress-nginx \
 --namespace ingress-nginx --create-namespace
@@ -169,3 +171,53 @@
   + Chọn Kubernetes Engine > Service And Ingress
   ![img_7.png](img_7.png)
   ![img_8.png](img_8.png)
+
+9. Setting domain With nameCheap (DNS là dinhxuanduong.website)
+
+- go to NameCheap console > Domain List > Chọn mangae của domainname
+![img_11.png](img_11.png)
+- Chọn Advanced DNS > ADD NEW RECORD > thêm IP của "Ingress-nginx-controller"
+![img_12.png](img_12.png)
+
+
+10. Active Ssl of namecheap (DNS là dinhxuanduong.website)
+- NameCheap console > ssl certificate > Chọn active
+![img_13.png](img_13.png) 
+- Trên google cloud console
+> $ mkdir ssl-certs
+ 
+> $ cd mkdir ssl-certs
+
+> $ openssl req -new -newkey rsa:2048 -nodes -keyout yourdomain_tld.key -out yourdomain_tld.csr
+
+> $ openssl req -new -newkey rsa:2048 -nodes -keyout dinhxuanduong_website.key -out dinhxuanduong_website.csr
+
+
+11. Install Cert Manager trên google cloud console 
+- Cert manager dùng để add ssl certificate cho K8s
+- (flow by https://cert-manager.io/docs/installation/helm/#prerequisites)
+
+> $ helm repo add jetstack https://charts.jetstack.io
+
+> $ helm repo update
+
+cách 1:
+ - CRD resources
+> $ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.crds.yaml
+ - install 
+> $ helm install \
+    cert-manager jetstack/cert-manager \
+    --namespace cert-manager \
+    --create-namespace \
+    --version v1.9.1 
+
+cách 2: 
+> $ helm install \
+    cert-manager jetstack/cert-manager \
+    --namespace cert-manager \
+    --create-namespace \
+    --version v1.9.1 \
+    --set installCRDs=true # Khác ở đây "--set installCRDs=true" do cert-manager requires cần thêm CRD resources
+- check install thành công hay chưa
+> $ kubectl get pods --namespace cert-manager
+
