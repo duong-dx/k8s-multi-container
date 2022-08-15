@@ -1,3 +1,5 @@
+cấu trúc dự án dưới local
+![img_10.png](img_10.png)
 1. tạo secret env
 > $ kubectl create secret generic postgres-password --from-literal POSTGRES_PASSWORD=password
 

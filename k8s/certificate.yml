@@ -1,0 +1,23 @@
+# using for production
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: dinh-xuan-duong-website-tls # [domain_name-tld của domain]-tls domain_name-tld: là domain-đuôi của domain
+spec:
+  secretName: dinh-xuan-duong-website
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: dinhxuanduong.website
+  dnsNames:
+    - dinhxuanduong.website
+    - www.dinhxuanduong.website
+    - ww.dinhxuanduong.website
+#  acme:
+#    config:
+#      - http01:
+#          ingressClass: nginx
+#        domains:
+#          - dinhxuanduong.website
+#          - www.dinhxuanduong.website
+#          - ww.dinhxuanduong.website
