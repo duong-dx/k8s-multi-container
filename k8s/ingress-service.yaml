@@ -11,8 +11,8 @@ metadata:
 spec:
   tls:
     - hosts:
-      - dinhxuanduong.com
-      - www.dinhxuanduong.com
+        - dinhxuanduong.com
+        - www.dinhxuanduong.com
       secretName: dinh-xuan-duong-website
   rules:
     - host: dinhxuanduong.com
