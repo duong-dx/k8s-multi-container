@@ -12,10 +12,10 @@ spec:
   dnsNames:
     - dinhxuanduong.website
     - www.dinhxuanduong.website
-#  acme:
-#    config:
-#      - http01:
-#          ingressClass: nginx
-#        domains:
-#          - dinhxuanduong.website
-#          - www.dinhxuanduong.website
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - dinhxuanduong.website
+          - www.dinhxuanduong.website
