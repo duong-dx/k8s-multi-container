@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+        environment: production
+        project: practice4-kubernetes
+    spec:
+      containers:
+        - name: server
+          image: duong1200798/multi-server # expose port 5001
+          ports:
+            - containerPort: 5001 # use port of image expose
+          envFrom: # using envFrom instead of env
+          - configMapRef: # referencing the ConfigMap
+              name: server-config-map # name of the ConfigMap
+          env:
+            - name: POSTGRES_PASSWORD # POSTGRES_PASSWORD create by secret
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-password
+                  key: POSTGRES_PASSWORD

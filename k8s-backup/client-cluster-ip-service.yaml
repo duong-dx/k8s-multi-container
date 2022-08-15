@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: web # label component of client container
+  ports:
+    - port: 3005 # this port of service
+      targetPort: 3005 # port of client container

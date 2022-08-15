@@ -12,7 +12,6 @@ spec:
   dnsNames:
     - dinhxuanduong.website
     - www.dinhxuanduong.website
-    - ww.dinhxuanduong.website
 #  acme:
 #    config:
 #      - http01:
@@ -20,4 +19,3 @@ spec:
 #        domains:
 #          - dinhxuanduong.website
 #          - www.dinhxuanduong.website
-#          - ww.dinhxuanduong.website
